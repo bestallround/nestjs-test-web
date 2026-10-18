@@ -66,6 +66,9 @@ export default function PostPage({ params }: PageProps<"/posts/[id]">) {
       <Suspense fallback={<p>불러오는 중...</p>}>
         <PostActions params={params} />
       </Suspense>
+      <Link href="/" className="mt-4">
+        목록으로
+      </Link>
     </main>
   );
 }
