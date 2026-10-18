@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { PostList } from "@/components/post-list";
 
@@ -31,9 +32,17 @@ export default function Home() {
         </section>
         <div className="my-4 h-px w-full bg-neutral-300" />
       </header>
-      <Suspense fallback={<p>불러오는 중...</p>}>
-        <PostList />
-      </Suspense>
+      <div className="flex items-start gap-4">
+        <Suspense fallback={<p>불러오는 중...</p>}>
+          <PostList />
+        </Suspense>
+        <Link
+          href="/posts/new"
+          className="shrink-0 border border-solid border-neutral-400 px-4 py-2"
+        >
+          게시글 작성
+        </Link>
+      </div>
     </main>
   );
 }

@@ -16,11 +16,11 @@ export async function PostList() {
   }
 
   return (
-    <ul className="m-0 flex list-none flex-wrap justify-center gap-4 p-0">
+    <ul className="m-0 flex list-none flex-col gap-4 p-0">
       {posts.map((post) => (
         <li
           key={post.id}
-          className="flex h-36 w-72 flex-col border border-solid border-neutral-400 p-3"
+          className="flex h-36 w-72 shrink-0 flex-col border border-solid border-neutral-400 p-3"
         >
           <div className="flex flex-1 items-center justify-center text-center">
             {post.title}
