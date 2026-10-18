@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { formatPostTime, getPost } from "@/lib/posts";
+import { deletePostAction } from "./actions";
 
 const buttonClassName = "border border-solid border-neutral-400 px-4 py-2";
 
@@ -30,26 +32,40 @@ async function PostDetail({ id }: { id: string }) {
   );
 }
 
-export default async function PostPage({
+async function PostActions({
   params,
-}: PageProps<"/posts/[id]">) {
+}: {
+  params: Promise<{ id: string }>;
+}) {
   const { id } = await params;
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-6">
-      <div className="flex items-start gap-4">
-        <Suspense fallback={<p>불러오는 중...</p>}>
-          <PostDetail id={id} />
-        </Suspense>
-        <div className="flex shrink-0 flex-col gap-2">
-          <button type="button" className={buttonClassName}>
-            게시글 수정
-          </button>
-          <button type="button" className={buttonClassName}>
+    <div className="flex items-start gap-4">
+      <PostDetail id={id} />
+      <div className="flex shrink-0 flex-col gap-2">
+        <Link
+          href={`/posts/${id}/edit`}
+          className={`${buttonClassName} block text-center`}
+        >
+          게시글 수정
+        </Link>
+        <form action={deletePostAction}>
+          <input type="hidden" name="id" value={id} />
+          <button type="submit" className={`${buttonClassName} w-full`}>
             게시글 삭제
           </button>
-        </div>
+        </form>
       </div>
+    </div>
+  );
+}
+
+export default function PostPage({ params }: PageProps<"/posts/[id]">) {
+  return (
+    <main className="flex min-h-screen flex-col items-center justify-center p-6">
+      <Suspense fallback={<p>불러오는 중...</p>}>
+        <PostActions params={params} />
+      </Suspense>
     </main>
   );
 }

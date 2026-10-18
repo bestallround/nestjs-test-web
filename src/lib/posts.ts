@@ -75,3 +75,42 @@ export async function createPost(input: {
 
   return response.json();
 }
+
+export async function updatePost(
+  id: number,
+  input: { title: string; content?: string },
+): Promise<Post> {
+  let response: Response;
+
+  try {
+    response = await fetch(`${apiUrl}/posts/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(input),
+    });
+  } catch {
+    throw new Error("API 서버에 연결하지 못했습니다.");
+  }
+
+  if (!response.ok) {
+    throw new Error(`게시글을 수정하지 못했습니다. (${response.status})`);
+  }
+
+  return response.json();
+}
+
+export async function deletePost(id: number): Promise<void> {
+  let response: Response;
+
+  try {
+    response = await fetch(`${apiUrl}/posts/${id}`, {
+      method: "DELETE",
+    });
+  } catch {
+    throw new Error("API 서버에 연결하지 못했습니다.");
+  }
+
+  if (!response.ok) {
+    throw new Error(`게시글을 삭제하지 못했습니다. (${response.status})`);
+  }
+}
