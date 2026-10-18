@@ -33,6 +33,26 @@ export async function getPosts(): Promise<Post[]> {
   return response.json();
 }
 
+export async function getPost(id: number): Promise<Post> {
+  let response: Response;
+
+  try {
+    response = await fetch(`${apiUrl}/posts/${id}`);
+  } catch {
+    throw new Error("API 서버에 연결하지 못했습니다.");
+  }
+
+  if (response.status === 404) {
+    throw new Error("게시글을 찾을 수 없습니다.");
+  }
+
+  if (!response.ok) {
+    throw new Error(`게시글을 가져오지 못했습니다. (${response.status})`);
+  }
+
+  return response.json();
+}
+
 export async function createPost(input: {
   title: string;
   content?: string;
